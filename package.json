@@ -1,0 +1,46 @@
+{
+  "name": "node-js-project-base",
+  "version": "1.0.0",
+  "description": "This is a node js with express base project",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "nodemon -r dotenv/config --inspect src/app.js --exec \"npm run lint && node\"",
+    "lint": "eslint src"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "projectBase"
+  ],
+  "author": "Edson Junio Malaquias",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "express-handlebars": "^5.3.3",
+    "express-locale": "^2.0.0",
+    "express-request-id": "^1.4.1",
+    "express-validation": "^1.0.3",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "md5": "^2.3.0",
+    "node-polyglot": "^2.4.2",
+    "pg": "^8.7.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.24.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.4.1",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "nodemon": "^2.0.12",
+    "prettier": "^2.3.2"
+  }
+}
