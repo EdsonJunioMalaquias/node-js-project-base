@@ -49,10 +49,3 @@ For development, you will only need Node.js and a node global package, npm, inst
 ## To get the MOCK_CRUD_URL I use https://crudcrud.com/
 
 MOCK_CRUD_URL=
-
-### Next Steps
-
-- Debugger Configurations
-- Update Joi and express-validation
-- Middleware authentication (JWT)
-- Layer Test
