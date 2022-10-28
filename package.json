@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "nodemon -r dotenv/config --inspect src/app.js --exec \"npm run lint && node\"",
+    "test": "nodemon -r dotenv/config --inspect test/index.test.js",
     "lint": "eslint src"
   },
   "keywords": [

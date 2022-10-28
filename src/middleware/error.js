@@ -1,13 +1,13 @@
 const CustomError = require('../helpers/errors/http/custom')
 const logger = require('../helpers/log')
-const ev = require('express-validation')
+const expressValidation = require('express-validation')
 
 const errorMiddleware = async (err, req, res, next) => {
-  if (err instanceof ev.ValidationError) {
+  if (err instanceof expressValidation.ValidationError) {
     return res.status(400).json({
       error: {
-        code: err.errors[0].messages[0],
-        message: req.polyglot.t(err.errors[0].messages[0]),
+        code: err.errors[0].message[0],
+        message: req.polyglot.t(err.errors[0].message[0]),
       },
       requestId: req.id,
     })

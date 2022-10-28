@@ -13,48 +13,75 @@ const _clearStringCPF = (cpf) => {
   throw new BadRequestError('invalid_cpf')
 }
 
-const _VerifyCPF = (cpf) => {
-  const strCpfFormatted = _clearStringCPF(cpf)
-  let sum = 0
-  let rest
+const _genericMethodValidateCpf = (fieldCpf) => {
+  let cpf = fieldCpf
 
-  if (strCpfFormatted === '00000000000') {
-    throw new BadRequestError('invalid_cpf')
+  if (cpf.length === 11) {
+    cpf = cpf.split('').map((digit) => Number(digit))
+
+    let v1 = 0
+    let v2 = 0
+    let aux = false
+
+    for (let i = 1; cpf.length > i; i++) {
+      if (cpf[i - 1] !== cpf[i]) {
+        aux = true
+      }
+    }
+
+    if (aux === false) {
+      return false
+    }
+
+    for (let i = 0, p = 10; cpf.length - 2 > i; i++, p--) {
+      v1 += cpf[i] * p
+    }
+
+    v1 = (v1 * 10) % 11
+
+    if (v1 === 10) {
+      v1 = 0
+    }
+
+    if (v1 !== cpf[9]) {
+      return false
+    }
+
+    for (let i = 0, p = 11; cpf.length - 1 > i; i++, p--) {
+      v2 += cpf[i] * p
+    }
+
+    v2 = (v2 * 10) % 11
+
+    if (v2 === 10) {
+      v2 = 0
+    }
+
+    if (v2 !== cpf[10]) {
+      return false
+    } else {
+      return true
+    }
+  } else {
+    return false
   }
-
-  for (let i = 1; i <= 9; i++) {
-    sum = sum + parseInt(strCpfFormatted.substring(i - 1, i)) * (11 - i)
-  }
-
-  rest = (sum * 10) % 11
-
-  if (rest === 10 || rest === 11) {
-    rest = 0
-  }
-
-  if (rest !== parseInt(strCpfFormatted.substring(9, 10))) {
-    throw new BadRequestError('invalid_cpf')
-  }
-
-  sum = 0
-
-  for (let i = 1; i <= 10; i++) {
-    sum = sum + parseInt(strCpfFormatted.substring(i - 1, i)) * (12 - i)
-  }
-
-  rest = (sum * 10) % 11
-
-  if (rest === 10 || rest === 11) {
-    rest = 0
-  }
-
-  if (rest !== parseInt(strCpfFormatted.substring(10, 11))) {
-    throw new BadRequestError('invalid_cpf')
-  }
-
-  return true
 }
+const _validateAndGetFormattedData = ({ name, cpf }) => {
+  cpf = _clearStringCPF(cpf)
 
+  if (!_genericMethodValidateCpf(cpf)) {
+    throw new BadRequestError('invalid_cpf')
+  }
+
+  if (name.length > 10) {
+    throw new BadRequestError(`name_greater_than_ten`)
+  }
+
+  return {
+    cpf,
+    name,
+  }
+}
 const getAll = async () => {
   return await serviceBase.mock.users.getAll()
 }
@@ -64,13 +91,15 @@ const getById = async ({ id }) => {
 }
 
 const post = async ({ name, cpf }) => {
-  _VerifyCPF(cpf)
-  return await serviceBase.mock.users.post({ name, cpf })
+  const user = _validateAndGetFormattedData({ name, cpf })
+
+  return await serviceBase.mock.users.post(user)
 }
 
 const put = async ({ id, name, cpf }) => {
-  _VerifyCPF(cpf)
-  return await serviceBase.mock.users.put({ id, name, cpf })
+  const user = _validateAndGetFormattedData({ name, cpf })
+
+  return await serviceBase.mock.users.put({ id, ...user })
 }
 
 const remove = async ({ id }) => {
