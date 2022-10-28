@@ -25,6 +25,7 @@ src
   │   ├───mock
   │   └───postgres
   └───validators
+test
 ```
 
 ## Requirements
